@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Asteroid Destroyer - Finger Control</title>
+    <meta name="description" content="Destroy asteroids using your finger tracked by your webcam!">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- MediaPipe Hands -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Stars Background -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- Main Game Container -->
+    <div class="game-container">
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Webcam Preview (Picture-in-Picture) -->
+        <div class="webcam-container" id="webcamContainer">
+            <video id="webcamVideo" autoplay playsinline muted></video>
+            <canvas id="trackingCanvas"></canvas>
+            <div class="webcam-label">👆 TRACKING</div>
+        </div>
+
+        <!-- Score Panel -->
+        <div class="score-panel">
+            <div class="score-item">
+                <span class="score-label">SCORE</span>
+                <span class="score-value" id="scoreDisplay">0</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">COMBO</span>
+                <span class="score-value combo" id="comboDisplay">x1</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">HIGH</span>
+                <span class="score-value high" id="highScoreDisplay">0</span>
+            </div>
+        </div>
+
+        <!-- Lives Display -->
+        <div class="lives-panel" id="livesPanel">
+            <span class="lives-icon">❤️</span>
+            <span class="lives-icon">❤️</span>
+            <span class="lives-icon">❤️</span>
+        </div>
+
+        <!-- Start Screen -->
+        <div class="overlay-screen" id="startScreen">
+            <div class="screen-content">
+                <h1 class="game-title">
+                    <span class="title-icon">🚀</span>
+                    ASTEROID DESTROYER
+                    <span class="title-icon">💥</span>
+                </h1>
+                <p class="game-subtitle">Use your finger to destroy asteroids!</p>
+
+                <div class="instructions-box">
+                    <h3>🎮 How to Play</h3>
+                    <ol>
+                        <li>Allow camera access when prompted</li>
+                        <li>Point your <span class="highlight">index finger</span> at the camera</li>
+                        <li>Move your finger to aim at asteroids</li>
+                        <li>Destroy asteroids before they reach the center!</li>
+                    </ol>
+                </div>
+
+                <div class="finger-demo">
+                    <div class="hand-icon">👆</div>
+                    <p>Your index finger tip will be tracked</p>
+                </div>
+
+                <button class="start-btn" id="startBtn">
+                    <span class="btn-text">🎯 START GAME</span>
+                    <span class="btn-glow"></span>
+                </button>
+
+                <p class="loading-hint" id="loadingHint" style="display: none;">
+                    ⏳ Loading hand tracking model...
+                </p>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="overlay-screen hidden" id="gameOverScreen">
+            <div class="screen-content">
+                <h1 class="game-over-title">GAME OVER</h1>
+                <div class="final-score">
+                    <span class="final-label">Final Score</span>
+                    <span class="final-value" id="finalScore">0</span>
+                </div>
+                <div class="final-score new-high hidden" id="newHighScore">
+                    <span class="final-label">🏆 NEW HIGH SCORE! 🏆</span>
+                </div>
+                <button class="start-btn" id="restartBtn">
+                    <span class="btn-text">🔄 PLAY AGAIN</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Camera Error Screen -->
+        <div class="overlay-screen hidden" id="cameraErrorScreen">
+            <div class="screen-content error-content">
+                <h1 class="error-title">📷 Camera Access Required</h1>
+                <p>This game needs your webcam to track your finger.</p>
+                <ul class="error-tips">
+                    <li>Make sure you have a webcam connected</li>
+                    <li>Allow camera permissions in your browser</li>
+                    <li>Try refreshing the page</li>
+                </ul>
+                <button class="start-btn" id="retryBtn">
+                    <span class="btn-text">🔄 TRY AGAIN</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
